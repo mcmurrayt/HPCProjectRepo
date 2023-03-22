@@ -13,6 +13,7 @@ namespace HPC_Project.Shared
         public string period { get; set; }
         public string state_fips { get; set; }
         public string county_fips { get; set; }
+        public string fips { get; set; }
     }
     /* 
      "region": "Colorado",
