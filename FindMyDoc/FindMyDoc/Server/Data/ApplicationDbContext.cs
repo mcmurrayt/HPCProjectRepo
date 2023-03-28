@@ -3,6 +3,7 @@ using FindMyDoc.Server.Models;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using FindMyDoc.Shared;
 
 namespace FindMyDoc.Server.Data
 {
@@ -13,5 +14,7 @@ namespace FindMyDoc.Server.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Provider> Providers => Set<Provider>();
     }
 }
