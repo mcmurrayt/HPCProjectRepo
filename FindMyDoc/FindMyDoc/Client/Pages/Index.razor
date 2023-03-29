@@ -1,80 +1,24 @@
 ﻿@page "/"
 @using System.ComponentModel.DataAnnotations
 
-<h1>User Form</h1>
+<style>
+body {
+background-color: lightskyblue;
 
-<EditForm Model="@user" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="regionCode">Region Code:</label>
-        <InputText id="regionCode" class="form-control" @bind-Value="@user.RegionCode" />
-    </div>
-
-    <div class="form-group">
-        <label for="insuranceNumber">Insurance Number:</label>
-        <InputText id="insuranceNumber" class="form-control" @bind-Value="@user.InsuranceNumber" />
-    </div>
-
-    <div class="form-group">
-        <label for="availabilityDate">Availability Date:</label>
-        <InputDate id="availabilityDate" class="form-control" @bind-Value="@user.AvailabilityDate" />
-    </div>
-
-    <div class="form-group">
-        <label for="primaryCareProvider">Primary Care Provider:</label>
-        <InputText id="primaryCareProvider" class="form-control" @bind-Value="@user.PrimaryCareProvider" />
-    </div>
-
-    <div class="form-group">
-        <label for="physician">Physician:</label>
-        <InputText id="physician" class="form-control" @bind-Value="@user.Physician" />
-    </div>
-
-    <div class="form-group">
-        <label for="nurse">Nurse:</label>
-        <InputText id="nurse" class="form-control" @bind-Value="@user.Nurse" />
-    </div>
-
-    <div class="form-group">
-        <label for="physicianAssistant">Physician Assistant:</label>
-        <InputText id="physicianAssistant" class="form-control" @bind-Value="@user.PhysicianAssistant" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button> </EditForm>
-
-@code {
-    private User user = new User();
-
-    private void HandleValidSubmit()
-    {
-        // Handle form submission here
-    }
-
-    private class User
-    {
-        [Required(ErrorMessage = "Region Code is required.")]
-        public string RegionCode { get; set; }
-
-        [Required(ErrorMessage = "Insurance Number is required.")]
-        public string InsuranceNumber { get; set; }
-
-        [Required(ErrorMessage = "Availability Date is required.")]
-        public DateTime? AvailabilityDate { get; set; }
-
-        [Required(ErrorMessage = "Primary Care Provider is required.")]
-        public string PrimaryCareProvider { get; set; }
-
-        [Required(ErrorMessage = "Physician is required.")]
-        public string Physician { get; set; }
-
-        [Required(ErrorMessage = "Nurse is required.")]
-        public string Nurse { get; set; }
-
-        [Required(ErrorMessage = "Physician Assistant is required.")]
-        public string PhysicianAssistant { get; set; }
-    }
 }
+</style>
+
+<img src="images\Findmydoc.png" alt = "logo" />
+
+
+
+<p>"Welcome to the next generation of finding your closest healthcare providers!</p>
+
+<p>Please Log In or Register to fill out the form!</p>
+
+
+
+
+
 
 
