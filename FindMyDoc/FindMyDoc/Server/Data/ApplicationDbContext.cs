@@ -16,5 +16,32 @@ namespace FindMyDoc.Server.Data
         }
 
         public DbSet<Provider> Providers => Set<Provider>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<FipsState>().ToTable("Fips_State");
+            modelBuilder.Entity<FipsState>().Property(p => p.Id).HasColumnName("Id");
+            modelBuilder.Entity<FipsState>().Property(p => p.StateFIPSCode).HasColumnName("State_Fips_Code");
+            modelBuilder.Entity<FipsState>().Property(p => p.StateName).HasColumnName("State_Name");
+
+
+            modelBuilder.Entity<FipsCounty>().ToTable("Fips_County");
+            modelBuilder.Entity<FipsCounty>().Property(p => p.Id).HasColumnName("Id");
+            modelBuilder.Entity<FipsCounty>().Property(p => p.CountyFIPSCode).HasColumnName("County_Fips_Code");
+            modelBuilder.Entity<FipsCounty>().Property(p => p.CountyName).HasColumnName("County_Name");
+            modelBuilder.Entity<FipsCounty>().Property(p => p.FipsStateId).HasColumnName("Fips_State_Id");
+
+      
+
+            modelBuilder.Entity<FipsState>()
+            .HasOne(s => s.County)
+            .WithMany()
+            .HasForeignKey(c => c.Id);
+
+            //modelBuilder.Entity<DeviceC>
+
+
+        }
     }
 }
