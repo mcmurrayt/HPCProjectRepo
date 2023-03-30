@@ -13,7 +13,7 @@ namespace FindMyDoc.Server.Models
         public DateTime dob { get; set; }
         public string address { get; set; }
         public string insuranceNum { get; set; }
-        public string fips { get; set; }
+        public string? fips { get; set; }
         public string gender { get; set; }
         public DateTime date { get; set; }
         public string state { get; set; }

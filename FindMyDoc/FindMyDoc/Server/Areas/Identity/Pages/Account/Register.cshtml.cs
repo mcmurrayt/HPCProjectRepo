@@ -79,8 +79,8 @@ namespace FindMyDoc.Server.Areas.Identity.Pages.Account
             public string lastName { get; set; }
 
             [Display(Name = "Date of Birth")]
-            //public date dob { get; set; }
             [Column(TypeName = "Date")] public DateTime dob { get; set; }
+
 
             [Display(Name = "Address")]
             public string address { get; set; }
