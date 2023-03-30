@@ -30,12 +30,14 @@ namespace FindMyDoc.Server.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    dob = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    dob = table.Column<DateTime>(type: "Date", nullable: false),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     insuranceNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     fips = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    state = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    county = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -73,6 +75,20 @@ namespace FindMyDoc.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DeviceCodes", x => x.UserCode);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Fips_County",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    County_Fips_Code = table.Column<string>(type: "Char(2)", nullable: false),
+                    County_Name = table.Column<string>(type: "VarChar(150)", nullable: false),
+                    Fips_State_Id = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fips_County", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,6 +259,25 @@ namespace FindMyDoc.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Fips_State",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    State_Fips_Code = table.Column<string>(type: "Char(2)", nullable: false),
+                    State_Name = table.Column<string>(type: "VarChar(150)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fips_State", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Fips_State_Fips_County_Id",
+                        column: x => x.Id,
+                        principalTable: "Fips_County",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -340,6 +375,9 @@ namespace FindMyDoc.Server.Migrations
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
+                name: "Fips_State");
+
+            migrationBuilder.DropTable(
                 name: "Keys");
 
             migrationBuilder.DropTable(
@@ -353,6 +391,9 @@ namespace FindMyDoc.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Fips_County");
         }
     }
 }

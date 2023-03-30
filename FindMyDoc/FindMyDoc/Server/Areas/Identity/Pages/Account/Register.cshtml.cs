@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FindMyDoc.Server.Areas.Identity.Pages.Account
 {
@@ -78,16 +79,15 @@ namespace FindMyDoc.Server.Areas.Identity.Pages.Account
             public string lastName { get; set; }
 
             [Display(Name = "Date of Birth")]
-            public DateTime dob { get; set; }
+            //public date dob { get; set; }
+            [Column(TypeName = "Date")] public DateTime dob { get; set; }
 
             [Display(Name = "Address")]
             public string address { get; set; }
 
             [Display(Name = "Insurance Number")]
-            public long insuranceNum { get; set; }
+            public string insuranceNum { get; set; }
 
-            [Display(Name = "FIPS (Federal Information Processing Standards) Code")]
-            public long fips { get; set; }
 
             [Display(Name = "Gender")]
             public string gender { get; set; }
@@ -144,7 +144,6 @@ namespace FindMyDoc.Server.Areas.Identity.Pages.Account
                 user.dob = Input.dob;
                 user.address = Input.address;
                 user.insuranceNum = Input.insuranceNum;
-                user.fips = Input.fips;
                 user.gender = Input.gender;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

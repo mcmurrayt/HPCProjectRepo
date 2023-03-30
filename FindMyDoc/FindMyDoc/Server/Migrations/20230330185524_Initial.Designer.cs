@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindMyDoc.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230329211725_Initial")]
+    [Migration("20230330185524_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -221,11 +221,15 @@ namespace FindMyDoc.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("county")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("dob")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("Date");
 
                     b.Property<string>("fips")
                         .IsRequired()
@@ -247,6 +251,10 @@ namespace FindMyDoc.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("state")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -258,6 +266,53 @@ namespace FindMyDoc.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("FindMyDoc.Shared.FipsCounty", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("CountyFIPSCode")
+                        .IsRequired()
+                        .HasColumnType("Char(2)")
+                        .HasColumnName("County_Fips_Code");
+
+                    b.Property<string>("CountyName")
+                        .IsRequired()
+                        .HasColumnType("VarChar(150)")
+                        .HasColumnName("County_Name");
+
+                    b.Property<string>("FipsStateId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Fips_State_Id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Fips_County", (string)null);
+                });
+
+            modelBuilder.Entity("FindMyDoc.Shared.FipsState", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Id");
+
+                    b.Property<string>("StateFIPSCode")
+                        .IsRequired()
+                        .HasColumnType("Char(2)")
+                        .HasColumnName("State_Fips_Code");
+
+                    b.Property<string>("StateName")
+                        .IsRequired()
+                        .HasColumnType("VarChar(150)")
+                        .HasColumnName("State_Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Fips_State", (string)null);
                 });
 
             modelBuilder.Entity("FindMyDoc.Shared.Provider", b =>
@@ -449,6 +504,17 @@ namespace FindMyDoc.Server.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("FindMyDoc.Shared.FipsState", b =>
+                {
+                    b.HasOne("FindMyDoc.Shared.FipsCounty", "County")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("County");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
