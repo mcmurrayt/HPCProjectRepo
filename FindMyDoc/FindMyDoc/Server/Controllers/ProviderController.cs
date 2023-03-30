@@ -27,11 +27,8 @@ namespace FindMyDoc.Server.Controllers
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
             return await _context.Providers.Where(x => x.fips == user.fips).ToListAsync();
 
-            /* if (providers == null)
-             {
-                return NotFound();
-             }
-             return Ok(providers);*/
+
+
         }
     }
 }

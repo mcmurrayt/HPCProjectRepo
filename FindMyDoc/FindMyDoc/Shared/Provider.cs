@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace FindMyDoc.Shared
 {
@@ -11,9 +12,10 @@ namespace FindMyDoc.Shared
         public string region { get; set; }
         public string region_code { get; set; }
         public string period { get; set; }
-        public string state_fips { get; set; }
-        public string county_fips { get; set; }
-        public string fips { get; set; }
+        public long state_fips { get; set; }
+        public long county_fips { get; set; }
+        [Key]
+        public long fips { get; set; }
         public int all_providers { get; set; }
         public int all_primary_care_providers { get; set; }
         public int all_physicians { get; set; }
