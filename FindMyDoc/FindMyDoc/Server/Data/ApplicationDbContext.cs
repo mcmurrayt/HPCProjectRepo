@@ -16,6 +16,7 @@ namespace FindMyDoc.Server.Data
         }
 
         public DbSet<Provider> Providers => Set<Provider>();
+        //public DbSet<FipsState> fipsStates => Set<FipsState>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
