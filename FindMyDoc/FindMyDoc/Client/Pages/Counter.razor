@@ -3,6 +3,12 @@
 @using System.ComponentModel.DataAnnotations
 
 <h1>User Form</h1>
+<style>
+body {
+background-color: lightskyblue;
+
+}
+</style>
 
 <EditForm Model="@user" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
