@@ -28,7 +28,6 @@ namespace FindMyDoc.Server.Controllers
             return await _context.Providers.Where(x => x.fips == user.fips).ToListAsync();
 
 
-
         }
     }
 }
