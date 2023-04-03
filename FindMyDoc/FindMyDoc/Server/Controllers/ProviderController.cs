@@ -28,7 +28,10 @@ namespace FindMyDoc.Server.Controllers
         public async Task<ActionResult<List<Provider>>> GetProviders()
         {
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            return await _context.Providers.Where(x => x.fips == user.fips).ToListAsync();
+            if (user == null)
+                return NotFound();
+            var list = await _context.Providers.Where(x => x.fips == user.fips).ToListAsync();
+            return list;
         }
 
         [HttpGet]
