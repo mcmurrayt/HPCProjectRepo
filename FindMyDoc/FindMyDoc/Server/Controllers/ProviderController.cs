@@ -36,12 +36,12 @@ namespace FindMyDoc.Server.Controllers
 
         [HttpGet]
         [Route("api/get-providers/{Fips}")]
-        public static Provider GetProviderByFips(string Fips)
+        public async Task<Provider> GetProviderByFips(string Fips)
         {
             HttpClient httpClient = new HttpClient { BaseAddress = new Uri("https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv") };
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            string newURL = "https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv" + "&fips=" + Fips + "&period=2013";
+            var newURL = "https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv" + "&fips=" + Fips + "&period=2013";
             HttpResponseMessage r = httpClient.GetAsync(newURL).Result;
 
             string rContent = r.Content.ReadAsStringAsync().Result;

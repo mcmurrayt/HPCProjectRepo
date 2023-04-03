@@ -9,21 +9,16 @@ namespace FindMyDoc.Server.Services
 {
     public class UserInputService
     {
-        public async Task<int> GetProviderNum(bool nurse, bool physician, bool physician_Assistant)
+        public async Task<int> GetProviderNum(Provider p, bool primary_Care, bool nurse, bool physician, bool physician_Assistant)
         {
             int sum = 0;
+            int val;
             if (nurse == true)
                 sum += 1;
             if (physician == true)
                 sum += 2;
             if (physician_Assistant == true)
                 sum += 3;
-            return sum;
-        }
-
-        public async Task<int> GetProviderSum(Provider p, bool primary_Care, int sum)
-        {
-            int val;
             if (primary_Care)
             {
                 switch (sum)
@@ -50,7 +45,7 @@ namespace FindMyDoc.Server.Services
                         val = -1;
                         break;
                     default:
-                        val = -2;
+                        val = -1;
                         break;
                 }
             }
@@ -80,11 +75,17 @@ namespace FindMyDoc.Server.Services
                         val = -1;
                         break;
                     default:
-                        val = -2;
+                        val = -1;
                         break;
                 }
             }
-            return val;
+            if(val == -1)
+            {
+                //error
+                return 0;
+            }
+            else
+                return val;
         }
     }
 }
