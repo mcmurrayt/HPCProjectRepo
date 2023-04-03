@@ -32,7 +32,7 @@ namespace FindMyDoc.Server.Controllers
         }
 
         [HttpGet]
-        [Route("api/get-providers")]
+        [Route("api/get-providers/{Fips}")]
         public static Provider GetProviderByFips(string Fips)
         {
             HttpClient httpClient = new HttpClient { BaseAddress = new Uri("https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv") };
