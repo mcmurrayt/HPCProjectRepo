@@ -9,6 +9,7 @@ using FindMyDoc.Shared;
 using System.Net.Http.Headers;
 using static System.Net.WebRequestMethods;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace FindMyDoc.Server.Controllers
 {
@@ -23,7 +24,7 @@ namespace FindMyDoc.Server.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Route("api/get-providers")]
         public async Task<ActionResult<List<Provider>>> GetProviders()
         {
@@ -32,24 +33,79 @@ namespace FindMyDoc.Server.Controllers
                 return NotFound();
             var list = await _context.Providers.Where(x => x.fips == user.fips).ToListAsync();
             return list;
+        }*/
+
+        [HttpGet]
+        [Route("api/fetch-provider")]
+        public async Task<ActionResult<Provider>> GetProvider()
+        {
+            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user != null)
+            {
+                try
+                {
+                    var p = _context.Providers.Where(x => x.fips == user.fips).FirstOrDefault();
+                    return Ok(p);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+                return NotFound();
         }
 
         [HttpGet]
-        [Route("api/get-providers/{Fips}")]
-        public async Task<Provider> GetProviderByFips(string Fips)
+        [Route("api/get-provider")]
+        public async Task<Provider> GetProviderByFips(string fips)
         {
-            HttpClient httpClient = new HttpClient { BaseAddress = new Uri("https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv") };
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            try
+            {
+                HttpClient httpClient = new HttpClient();
 
-            var newURL = "https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv" + "&fips=" + Fips + "&period=2013";
-            HttpResponseMessage r = httpClient.GetAsync(newURL).Result;
+                var newURL = $"https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv";
+                Console.WriteLine(newURL);
+                List<Provider> providers = await httpClient.GetFromJsonAsync<List<Provider>>(newURL);
 
-            string rContent = r.Content.ReadAsStringAsync().Result;
-            //the default json object being printed
-            Console.WriteLine(rContent);
+                var f = (from p in providers
+                               where p.fips == fips
+                               select p).LastOrDefault();
 
-            Provider p = JsonConvert.DeserializeObject<Provider>(rContent);
-            return p;
+                Console.WriteLine(f);
+                Console.WriteLine("Created Provider");
+                return f;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return new Provider();
+        }
+
+        [HttpPost]
+        [Route("api/add-provider")]
+        public void AddProvider([FromBody] Provider provider)
+        {
+            try
+            {
+                _context.Providers.Add(provider);
+                Console.WriteLine("Added Provider to db");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{num}")]
+        public int PrintNumber(int num)
+        {
+            //HttpClient httpClient = new HttpClient();
+            //var url = "https://localhost:7126/";
+            return num;
         }
     }
 }

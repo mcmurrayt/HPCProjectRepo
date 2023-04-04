@@ -1,11 +1,7 @@
-﻿using FindMyDoc.Server.Data;
-using FindMyDoc.Server.Models;
-using FindMyDoc.Shared;
+﻿using FindMyDoc.Shared;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
-namespace FindMyDoc.Server.Services
+namespace FindMyDoc.Client.Services
 {
     public class UserInputService
     {
@@ -19,7 +15,7 @@ namespace FindMyDoc.Server.Services
                 sum += 2;
             if (physician_Assistant == true)
                 sum += 3;
-            if (primary_Care)
+            if (!primary_Care)
             {
                 switch (sum)
                 {

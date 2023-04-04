@@ -9,12 +9,17 @@ namespace FindMyDoc.Shared
 {
     public class FipsCounty
     {
-        public string Id { get; set; }
-        [Column(TypeName = "Char(2)")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Column(TypeName = "Char(5)")]
         public string CountyFIPSCode { get; set; }
         [Column(TypeName = "VarChar(150)")]
         public string CountyName { get; set; }
-        public string FipsStateId { get; set; }
+        [ForeignKey("Id")]
+        public int FipsStateId { get; set; }
+
+        public virtual FipsState? FipsState { get; set; }
+        
 
     }
 }

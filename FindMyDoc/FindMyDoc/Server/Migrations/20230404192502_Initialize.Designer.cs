@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FindMyDoc.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230330215005_Secondary")]
-    partial class Secondary
+    [Migration("20230404192502_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -269,13 +269,16 @@ namespace FindMyDoc.Server.Migrations
 
             modelBuilder.Entity("FindMyDoc.Shared.FipsCounty", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CountyFIPSCode")
                         .IsRequired()
-                        .HasColumnType("Char(2)")
+                        .HasColumnType("Char(5)")
                         .HasColumnName("County_Fips_Code");
 
                     b.Property<string>("CountyName")
@@ -283,21 +286,25 @@ namespace FindMyDoc.Server.Migrations
                         .HasColumnType("VarChar(150)")
                         .HasColumnName("County_Name");
 
-                    b.Property<string>("FipsStateId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int>("FipsStateId")
+                        .HasColumnType("int")
                         .HasColumnName("Fips_State_Id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FipsStateId");
 
                     b.ToTable("Fips_County", (string)null);
                 });
 
             modelBuilder.Entity("FindMyDoc.Shared.FipsState", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("StateFIPSCode")
                         .IsRequired()
@@ -505,15 +512,15 @@ namespace FindMyDoc.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("FindMyDoc.Shared.FipsState", b =>
+            modelBuilder.Entity("FindMyDoc.Shared.FipsCounty", b =>
                 {
-                    b.HasOne("FindMyDoc.Shared.FipsCounty", "County")
+                    b.HasOne("FindMyDoc.Shared.FipsState", "FipsState")
                         .WithMany()
-                        .HasForeignKey("Id")
+                        .HasForeignKey("FipsStateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("County");
+                    b.Navigation("FipsState");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

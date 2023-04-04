@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations.Schema;
+using FindMyDoc.Server.Services;
+using FindMyDoc.Server.Data;
 
 namespace FindMyDoc.Server.Areas.Identity.Pages.Account
 {
@@ -31,13 +33,15 @@ namespace FindMyDoc.Server.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +49,7 @@ namespace FindMyDoc.Server.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -152,6 +157,9 @@ namespace FindMyDoc.Server.Areas.Identity.Pages.Account
                 user.gender = Input.gender;
                 user.state = Input.state;
                 user.county = Input.county;
+                //updates user fips by state and county entered on regristration and update?
+                UserService u = new UserService(_context);
+                user.fips = await u.UpdateUserFips(user.state, user.county);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

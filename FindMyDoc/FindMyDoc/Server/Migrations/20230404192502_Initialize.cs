@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FindMyDoc.Server.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,7 +33,7 @@ namespace FindMyDoc.Server.Migrations
                     dob = table.Column<DateTime>(type: "Date", nullable: false),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     insuranceNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fips = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    fips = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     state = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -78,17 +78,17 @@ namespace FindMyDoc.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fips_County",
+                name: "Fips_State",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    County_Fips_Code = table.Column<string>(type: "Char(2)", nullable: false),
-                    County_Name = table.Column<string>(type: "VarChar(150)", nullable: false),
-                    Fips_State_Id = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    State_Fips_Code = table.Column<string>(type: "Char(2)", nullable: false),
+                    State_Name = table.Column<string>(type: "VarChar(150)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Fips_County", x => x.Id);
+                    table.PrimaryKey("PK_Fips_State", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -260,20 +260,22 @@ namespace FindMyDoc.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fips_State",
+                name: "Fips_County",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    State_Fips_Code = table.Column<string>(type: "Char(2)", nullable: false),
-                    State_Name = table.Column<string>(type: "VarChar(150)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    County_Fips_Code = table.Column<string>(type: "Char(5)", nullable: false),
+                    County_Name = table.Column<string>(type: "VarChar(150)", nullable: false),
+                    Fips_State_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Fips_State", x => x.Id);
+                    table.PrimaryKey("PK_Fips_County", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Fips_State_Fips_County_Id",
-                        column: x => x.Id,
-                        principalTable: "Fips_County",
+                        name: "FK_Fips_County_Fips_State_Fips_State_Id",
+                        column: x => x.Fips_State_Id,
+                        principalTable: "Fips_State",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -329,6 +331,11 @@ namespace FindMyDoc.Server.Migrations
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Fips_County_Fips_State_Id",
+                table: "Fips_County",
+                column: "Fips_State_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Keys_Use",
                 table: "Keys",
                 column: "Use");
@@ -375,7 +382,7 @@ namespace FindMyDoc.Server.Migrations
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
-                name: "Fips_State");
+                name: "Fips_County");
 
             migrationBuilder.DropTable(
                 name: "Keys");
@@ -393,7 +400,7 @@ namespace FindMyDoc.Server.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Fips_County");
+                name: "Fips_State");
         }
     }
 }

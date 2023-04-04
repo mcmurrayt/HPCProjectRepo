@@ -1,5 +1,8 @@
 ﻿@page "/"
+@inject HttpClient Http
 @using System.ComponentModel.DataAnnotations
+@using FindMyDoc.Shared;
+@using System.Net.Http.Json;
 
 <style>
 body {
@@ -16,7 +19,37 @@ background-color: lightskyblue;
 
 <p>Please Log In or Register to fill out the form!</p>
 
+<button onclick=@(() => GetProviderByFips())>Get Provider By Fips</button>
 
+@functions
+{
+    private async Task GetProviderByFips()
+    {
+        try
+        {
+            Provider p = await Http.GetFromJsonAsync<Provider>("api/get-provider?fips=4013");
+
+            Console.WriteLine(p.all_providers);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    /*private async Task PostProvider(Provider p)
+    {
+        try
+        {
+            await Http.PostAsync("api/add-provider",p)
+            //await Http.PostAsync()
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }*/
+}
 
 
 

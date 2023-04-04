@@ -29,10 +29,10 @@ namespace FindMyDoc.Server.Data
             modelBuilder.Entity<FipsCounty>().Property(p => p.CountyName).HasColumnName("County_Name");
             modelBuilder.Entity<FipsCounty>().Property(p => p.FipsStateId).HasColumnName("Fips_State_Id");
 
-            modelBuilder.Entity<FipsState>()
+            /*modelBuilder.Entity<FipsState>()
             .HasOne(s => s.County)
             .WithMany()
-            .HasForeignKey(c => c.Id);
+            .HasForeignKey(c => c.Id);*/
         }
     }
 }
