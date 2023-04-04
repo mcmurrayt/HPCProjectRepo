@@ -17,29 +17,21 @@ namespace FindMyDoc.Server.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public ProviderController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ProviderController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        /*[HttpGet]
-        [Route("api/get-providers")]
-        public async Task<ActionResult<List<Provider>>> GetProviders()
-        {
-            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            if (user == null)
-                return NotFound();
-            var list = await _context.Providers.Where(x => x.fips == user.fips).ToListAsync();
-            return list;
-        }*/
-
         [HttpGet]
-        [Route("api/fetch-provider")]
+        [Route("api/get-provider")]
         public async Task<ActionResult<Provider>> GetProvider()
         {
-            var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 try
@@ -53,59 +45,39 @@ namespace FindMyDoc.Server.Controllers
                     return BadRequest(ex.Message);
                 }
             }
-            else
-                return NotFound();
+            else { return NotFound(); }
         }
 
         [HttpGet]
-        [Route("api/get-provider")]
-        public async Task<Provider> GetProviderByFips(string fips)
+        [Route("api/create-provider")]
+        public async Task<ActionResult<bool>> GetProviderByFips()
         {
-            try
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
             {
-                HttpClient httpClient = new HttpClient();
+                try
+                {
+                    HttpClient httpClient = new HttpClient();
+                    string fips = user.fips;
 
-                var newURL = $"https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv";
-                Console.WriteLine(newURL);
-                List<Provider> providers = await httpClient.GetFromJsonAsync<List<Provider>>(newURL);
+                    var newURL = $"https://www.healthit.gov/data/open-api?source=SKA_State_County_Data_2011-2013.csv";
+                    Console.WriteLine(newURL);
+                    List<Provider> providers = await httpClient.GetFromJsonAsync<List<Provider>>(newURL);
+                    var provider = providers.Where(x => x.fips != "" && Convert.ToInt32(x.fips) == Convert.ToInt32(fips)).LastOrDefault();
 
-                var f = (from p in providers
-                               where p.fips == fips
-                               select p).LastOrDefault();
+                    _context.Providers.Add(provider);
+                    await _context.SaveChangesAsync();
 
-                Console.WriteLine(f);
-                Console.WriteLine("Created Provider");
-                return f;
+                    return Ok(true);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return BadRequest();
+                }
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return new Provider();
-        }
-
-        [HttpPost]
-        [Route("api/add-provider")]
-        public void AddProvider([FromBody] Provider provider)
-        {
-            try
-            {
-                _context.Providers.Add(provider);
-                Console.WriteLine("Added Provider to db");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [Route("{num}")]
-        public int PrintNumber(int num)
-        {
-            //HttpClient httpClient = new HttpClient();
-            //var url = "https://localhost:7126/";
-            return num;
+            else { return NotFound(); }
         }
     }
 }

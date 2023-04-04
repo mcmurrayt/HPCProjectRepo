@@ -22,36 +22,36 @@ height: 3.5rem;
 
 <p>Please Log In or Register to fill out the form!</p>
 
-<button onclick=@(() => GetProviderByFips())>Get Provider By Fips</button>
+<button onclick=@(() => CreateProvider())>Create Provider</button>
+<button onclick=@(() => GetProvider())>Get Provider</button>
 
 @functions
 {
-    private async Task GetProviderByFips()
+    private async Task GetProvider()
     {
         try
         {
-            Provider p = await Http.GetFromJsonAsync<Provider>("api/get-provider?fips=4013");
+            Provider p = await Http.GetFromJsonAsync<Provider>("api/get-provider");
+            Console.WriteLine(p);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
 
-            Console.WriteLine(p.all_providers);
+    }
+    private async Task CreateProvider()
+    {
+        try
+        {
+            bool success = await Http.GetFromJsonAsync<bool>("api/create-provider");
+            Console.WriteLine(success);
         }
         catch(Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
     }
-
-    /*private async Task PostProvider(Provider p)
-    {
-        try
-        {
-            await Http.PostAsync("api/add-provider",p)
-            //await Http.PostAsync()
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }*/
 }
 
 
