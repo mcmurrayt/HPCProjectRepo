@@ -5,7 +5,7 @@ namespace FindMyDoc.Client.Services
 {
     public class UserInputService
     {
-        public async Task<int> GetProviderNum(Provider p, bool primary_Care, bool nurse, bool physician, bool physician_Assistant)
+        public int GetProviderNum(Provider p, bool primary_Care, bool physician, bool nurse, bool physician_Assistant)
         {
             int sum = 0;
             int val;

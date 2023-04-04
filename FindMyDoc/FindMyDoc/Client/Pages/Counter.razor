@@ -1,6 +1,9 @@
 ﻿@page "/counter"
-
-@using System.ComponentModel.DataAnnotations
+@inject HttpClient Http
+@using FindMyDoc.Shared;
+@using System.Net.Http.Json;
+@using System.ComponentModel.DataAnnotations;
+@using FindMyDoc.Client.Services;
 
 <h1>User Form</h1>
 <style>
@@ -14,60 +17,69 @@ height: 3.5rem;
 }
 </style>
 
-<EditForm Model="@user" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@input" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group">
-        <label for="regionCode">Region Code:</label>
-        <InputText id="regionCode" class="form-control" @bind-Value="@user.RegionCode" />
-    </div>
-
-    <div class="form-group">
         <label for="insuranceNumber">Insurance Number:</label>
-        <InputText id="insuranceNumber" class="form-control" @bind-Value="@user.InsuranceNumber" />
+        <InputText id="insuranceNumber" class="form-control" @bind-Value="@input.InsuranceNumber" />
     </div>
 
     <div class="form-group">
         <label for="availabilityDate">Availability Date:</label>
-        <InputDate id="availabilityDate" class="form-control" @bind-Value="@user.AvailabilityDate" />
+        <InputDate id="availabilityDate" class="form-control" @bind-Value="@input.AvailabilityDate" />
     </div>
 
     <div class="form-group">
         <label for="primaryCareProvider">Primary Care Provider:</label>
-        <InputText id="primaryCareProvider" class="form-control" @bind-Value="@user.PrimaryCareProvider" />
+        <InputCheckbox id="primaryCareProvider" class="form-control" @bind-Value="@input.PrimaryCareProvider" />
     </div>
 
     <div class="form-group">
         <label for="physician">Physician:</label>
-        <InputText id="physician" class="form-control" @bind-Value="@user.Physician" />
+        <InputCheckbox id="physician" class="form-control" @bind-Value="@input.Physician" />
     </div>
 
     <div class="form-group">
         <label for="nurse">Nurse:</label>
-        <InputText id="nurse" class="form-control" @bind-Value="@user.Nurse" />
+        <InputCheckbox id="nurse" class="form-control" @bind-Value="@input.Nurse" />
     </div>
 
     <div class="form-group">
         <label for="physicianAssistant">Physician Assistant:</label>
-        <InputText id="physicianAssistant" class="form-control" @bind-Value="@user.PhysicianAssistant" />
+        <InputCheckbox id="physicianAssistant" class="form-control" @bind-Value="@input.PhysicianAssistant" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button> </EditForm>
+    <button onclick=@(() => num = s.GetProviderNum(p, input.PrimaryCareProvider, input.Physician, input.Nurse, input.PhysicianAssistant))>Generate</button>
+    <button onclick=@(() => PrintNum(num))>Print Num</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+    </EditForm>
 
 @code {
-    private User user = new User();
+    private UserInputService s = new UserInputService();
+    private inputData input = new inputData();
+    private Provider p = new Provider();
+    private int num;
 
     private void HandleValidSubmit()
     {
-        // Handle form submission here
+        //Handle form submission here
     }
 
-    private class User
+    protected override void OnAfterRender(bool firstRender)
     {
-        [Required(ErrorMessage = "Region Code is required.")]
-        public string RegionCode { get; set; }
+        // execute conditionally for loading data, otherwise this will load
+        // every time the page refreshes
+        if(firstRender)
+        {
+            p = GetProvider().Result;
+        }
+}
 
+    private class inputData
+    {
         [Required(ErrorMessage = "Insurance Number is required.")]
         public string InsuranceNumber { get; set; }
 
@@ -75,16 +87,39 @@ height: 3.5rem;
         public DateTime? AvailabilityDate { get; set; }
 
         [Required(ErrorMessage = "Primary Care Provider is required.")]
-        public string PrimaryCareProvider { get; set; }
+        public bool PrimaryCareProvider { get; set; }
 
         [Required(ErrorMessage = "Physician is required.")]
-        public string Physician { get; set; }
+        public bool Physician { get; set; }
 
         [Required(ErrorMessage = "Nurse is required.")]
-        public string Nurse { get; set; }
+        public bool Nurse { get; set; }
 
         [Required(ErrorMessage = "Physician Assistant is required.")]
-        public string PhysicianAssistant { get; set; }
+        public bool PhysicianAssistant { get; set; }
+    }
+}
+
+@functions
+{
+    private async Task<Provider> GetProvider()
+    {
+        try
+        {
+            Provider p = await Http.GetFromJsonAsync<Provider>("api/get-provider");
+            Console.WriteLine(p);
+            return p;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return new Provider();
+        }
+    }
+
+    private void PrintNum(int num)
+    {
+        Console.WriteLine(num);
     }
 }
 
