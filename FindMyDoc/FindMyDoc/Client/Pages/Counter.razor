@@ -62,14 +62,18 @@ height: 3.5rem;
 
     <button onclick=@(() => GenerateProvider())>Generate</button>
     <button onclick=@(() => PrintNum(num))>Print Num</button>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button @onclick= "ShowText" type="submit" class="btn btn-primary">Submit</button>
 
+    
+    @if (buttonClicked)
+    {
     <p><strong>Username:</strong> @model.UserName</p>
     <p><strong>First Name:</strong> @model.firstName</p>
     <p><strong>Last Name:</strong> @model.lastName</p>
     <p><strong>Date of Birth:</strong> @model.dob.ToString("mm/dd/yyyy")</p>
     <p><strong>County:</strong> @model.county</p>
     <p><strong>Insurance Number:</strong> @model.insuranceNum</p>
+    }
 
     </EditForm>
 
@@ -79,6 +83,13 @@ height: 3.5rem;
     private Provider p = new Provider();
     private int num;
     private ApplicationUser model;
+
+    private bool buttonClicked = false;
+
+    private void ShowText()
+    {
+        buttonClicked = true;
+    }
 
     private void HandleValidSubmit()
     {
