@@ -17,6 +17,8 @@ namespace FindMyDoc.Server.Controllers
             _signInManager = signInManager;
         }
 
+        [HttpGet]
+        [Route("output/on-get")]
         public async Task<IActionResult> OnGet()
         {
             // Get the current user's ID
