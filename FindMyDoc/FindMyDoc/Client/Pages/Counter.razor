@@ -30,28 +30,28 @@ height: 3.5rem;
 <div class="form-check">
 <input class="form-check-input" type="checkbox" @bind-value="input.PrimaryCareProvider" id="flexCheckDefault">
 <label class="form-check-label" for"flexCheckDefault">
-	Do You Have a Primary Care Provider
+	Would you like a Primary Care Provider?
 	</label>
 </div>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" @bind-value="input.Physician" id="flexCheckDefault">
 <label class="form-check-label" for"flexCheckDefault">
-	Do you need a Physician
+	Would you like to see a Physician?
 	</label>
 </div>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" @bind-value="input.Nurse" id="flexCheckDefault">
 <label class="form-check-label" for"flexCheckDefault">
-	Do you need a Nurse
+	Would you like to see a Nurse?
 	</label>
 </div>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" @bind-value="input.PhysicianAssistant" id="flexCheckDefault">
 <label class="form-check-label" for"flexCheckDefault">
-	Do you need a Physician Assistant
+	Would you like to see a Physician Assistant?
 	</label>
 </div>
 
@@ -79,6 +79,7 @@ height: 3.5rem;
                     </div>
                 </div>
                 <hr />
+                <h5 class="card-title">Provider Report</h5>
                 <p class="card-text"><strong>Total Number of Providers:</strong> @sumTotal</p>
             </div>
         </div>
