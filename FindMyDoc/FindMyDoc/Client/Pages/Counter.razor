@@ -23,11 +23,6 @@ height: 3.5rem;
     <ValidationSummary />
 
     <div class="form-group">
-        <label for="insuranceNumber">What is your Insurance Number:</label>
-        <InputText id="insuranceNumber" class="form-control" @bind-Value="@input.InsuranceNumber" />
-    </div>
-
-    <div class="form-group">
         <label for="availabilityDate">What is your Availability Date:</label>
         <InputDate id="availabilityDate" class="form-control" @bind-Value="@input.AvailabilityDate" />
     </div>
@@ -68,8 +63,11 @@ height: 3.5rem;
     <p><strong>First Name:</strong> @model.firstName</p>
     <p><strong>Last Name:</strong> @model.lastName</p>
     <p><strong>Date of Birth:</strong> @model.dob.ToString("mm/dd/yyyy")</p>
+    <p><strong>Address:</strong> @model.address</p>
     <p><strong>County:</strong> @model.county</p>
+    <p><strong>State:</strong> @model.state</p>
     <p><strong>Insurance Number:</strong> @model.insuranceNum</p>
+    <p><strong>Total Number of Providers:</strong> @sumTotal</p>
 
     </EditForm>
 
@@ -79,6 +77,8 @@ height: 3.5rem;
     private Provider p = new Provider();
     private int num;
     private ApplicationUser model;
+    public int sumTotal => num;
+
 
     private void HandleValidSubmit()
     {
@@ -133,8 +133,6 @@ height: 3.5rem;
 
     private class inputData
     {
-        [Required(ErrorMessage = "Insurance Number is required.")]
-        public string InsuranceNumber { get; set; }
 
         [Required(ErrorMessage = "Availability Date is required.")]
         public DateTime? AvailabilityDate { get; set; }

@@ -31,7 +31,9 @@ namespace FindMyDoc.Server.Controllers
             var firstname = user.firstName;
             var lastname = user.lastName;
             var dob = user.dob;
+            var address = user.address;
             var region = user.county;
+            var state = user.state;
             var insurance = user.insuranceNum;
 
             var model = new ApplicationUser
@@ -40,7 +42,9 @@ namespace FindMyDoc.Server.Controllers
                 firstName = firstname,
                 lastName = lastname,
                 dob = dob,
+                address = address,
                 county = region,
+                state = state,
                 insuranceNum = insurance
             };
 
