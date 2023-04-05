@@ -66,10 +66,18 @@ namespace FindMyDoc.Server.Controllers
                     List<Provider> providers = await httpClient.GetFromJsonAsync<List<Provider>>(newURL);
                     var provider = providers.Where(x => x.fips != "" && Convert.ToInt32(x.fips) == Convert.ToInt32(fips)).LastOrDefault();
 
-                    _context.Providers.Add(provider);
-                    await _context.SaveChangesAsync();
-
-                    return Ok(true);
+                    if(_context.Providers.Contains(provider))
+                    {
+                        Console.WriteLine("Database already contains this Provider");
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        _context.Providers.Add(provider);
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine("Added new Provider to Database");
+                        return Ok(true);
+                    }
                 }
                 catch (Exception ex)
                 {

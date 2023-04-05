@@ -112,6 +112,19 @@ height: 3.5rem;
         }
     }
 
+    private async Task CreateProvider()
+    {
+        try
+        {
+            bool success = await Http.GetFromJsonAsync<bool>("api/create-provider");
+            Console.WriteLine(success);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
     private void PrintNum(int num)
     {
         Console.WriteLine(num);
@@ -124,6 +137,7 @@ height: 3.5rem;
         {
             model = await Http.GetFromJsonAsync<ApplicationUser>("output/on-get");
             p = await GetProvider();
+            await CreateProvider();
         }
         catch (Exception ex)
         {
