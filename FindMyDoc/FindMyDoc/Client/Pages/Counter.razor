@@ -6,7 +6,7 @@
 @using FindMyDoc.Client.Services;
 @using FindMyDoc.Server.Models;
 
-<h1>User Form</h1>
+<h1>Find Your Doc Here:</h1>
 <style>
 body {
 background-color: #D9CFE7;
@@ -57,17 +57,22 @@ height: 3.5rem;
 
     <button onclick=@(() => GenerateProvider())>Generate</button>
     <button onclick=@(() => PrintNum(num))>Print Num</button>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button @onclick= "ShowText" type="submit" class="btn btn-primary">Submit</button>
 
-    <p><strong>Username:</strong> @model.UserName</p>
-    <p><strong>First Name:</strong> @model.firstName</p>
-    <p><strong>Last Name:</strong> @model.lastName</p>
-    <p><strong>Date of Birth:</strong> @model.dob.ToString("mm/dd/yyyy")</p>
-    <p><strong>Address:</strong> @model.address</p>
-    <p><strong>County:</strong> @model.county</p>
-    <p><strong>State:</strong> @model.state</p>
-    <p><strong>Insurance Number:</strong> @model.insuranceNum</p>
-    <p><strong>Total Number of Providers:</strong> @sumTotal</p>
+    
+    @if (buttonClicked)
+    {
+        <p><strong>Username:</strong> @model.UserName</p>
+        <p><strong>First Name:</strong> @model.firstName</p>
+        <p><strong>Last Name:</strong> @model.lastName</p>
+        <p><strong>Date of Birth:</strong> @model.dob.ToString("mm/dd/yyyy")</p>
+        <p><strong>Address:</strong> @model.address</p>
+        <p><strong>County:</strong> @model.county</p>
+        <p><strong>State:</strong> @model.state</p>
+        <p><strong>Insurance Number:</strong> @model.insuranceNum</p>
+        <p><strong>Total Number of Providers:</strong> @sumTotal</p>
+    }
+
 
     </EditForm>
 
@@ -79,6 +84,13 @@ height: 3.5rem;
     private ApplicationUser model;
     public int sumTotal => num;
 
+
+    private bool buttonClicked = false;
+
+    private void ShowText()
+    {
+        buttonClicked = true;
+    }
 
     private void HandleValidSubmit()
     {
