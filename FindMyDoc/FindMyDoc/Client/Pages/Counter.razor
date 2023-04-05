@@ -63,6 +63,34 @@ height: 3.5rem;
 </select>
     </div>
 
+<div class="form-check">
+<input class="form-check-input" type="checkbox" @bind-value="input.PrimaryCareProvider" id="flexCheckDefault">
+<label class="form-check-label" for"flexCheckDefault">
+	Do You Have a Primary Care Provider
+	</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" @bind-value="input.Physician" id="flexCheckDefault">
+<label class="form-check-label" for"flexCheckDefault">
+	Do you need a Physician
+	</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" @bind-value="input.Nurse" id="flexCheckDefault">
+<label class="form-check-label" for"flexCheckDefault">
+	Do you need a Nurse
+	</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" @bind-value="input.PhysicianAssistant" id="flexCheckDefault">
+<label class="form-check-label" for"flexCheckDefault">
+	Do you need a Physician Assistant
+	</label>
+</div>
+
     <button onclick=@(() => num = s.GetProviderNum(p, input.PrimaryCareProvider, input.Physician, input.Nurse, input.PhysicianAssistant))>Generate</button>
     <button onclick=@(() => PrintNum(num))>Print Num</button>
     <button type="submit" class="btn btn-primary">Submit</button>
@@ -88,7 +116,7 @@ height: 3.5rem;
         {
             p = GetProvider().Result;
         }
-}
+    }
 
     private class inputData
     {
@@ -99,16 +127,16 @@ height: 3.5rem;
         public DateTime? AvailabilityDate { get; set; }
 
         [Required(ErrorMessage = "Primary Care Provider is required.")]
-        public bool PrimaryCareProvider { get; set; }
+        public bool PrimaryCareProvider { get; set; } = false;
 
         [Required(ErrorMessage = "Physician is required.")]
-        public bool Physician { get; set; }
+        public bool Physician { get; set; } = false;
 
         [Required(ErrorMessage = "Nurse is required.")]
-        public bool Nurse { get; set; }
+        public bool Nurse { get; set; } = false;
 
         [Required(ErrorMessage = "Physician Assistant is required.")]
-        public bool PhysicianAssistant { get; set; }
+        public bool PhysicianAssistant { get; set; } = false;
     }
 }
 
