@@ -60,17 +60,29 @@ height: 3.5rem;
     
     @if (buttonClicked)
     {
-        <p><strong>Username:</strong> @model.UserName</p>
-        <p><strong>First Name:</strong> @model.firstName</p>
-        <p><strong>Last Name:</strong> @model.lastName</p>
-        <p><strong>Date of Birth:</strong> @model.dob.ToString("mm/dd/yyyy")</p>
-        <p><strong>Address:</strong> @model.address</p>
-        <p><strong>County:</strong> @model.county</p>
-        <p><strong>State:</strong> @model.state</p>
-        <p><strong>Insurance Number:</strong> @model.insuranceNum</p>
-        <p><strong>Total Number of Providers:</strong> @sumTotal</p>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">User Information</h5>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Username:</strong> @model.UserName</p>
+                        <p><strong>First Name:</strong> @model.firstName</p>
+                        <p><strong>Last Name:</strong> @model.lastName</p>
+                        <p><strong>Date of Birth:</strong> @model.dob.ToString("mm/dd/yyyy")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Address:</strong> @model.address</p>
+                        <p><strong>County:</strong> @model.county</p>
+                        <p><strong>State:</strong> @model.state</p>
+                        <p><strong>Insurance Number:</strong> @model.insuranceNum</p>
+                    </div>
+                </div>
+                <hr />
+                <p class="card-text"><strong>Total Number of Providers:</strong> @sumTotal</p>
+            </div>
+        </div>
     }
-
 
     </EditForm>
 
