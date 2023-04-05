@@ -1,0 +1,39 @@
+﻿@page "/output"
+
+@inject HttpClient httpClient
+@using FindMyDoc.Server.Models;
+@using System.Net.Http.Json;
+@using System.ComponentModel.DataAnnotations;
+@using FindMyDoc.Client.Services
+
+<h1>User Information</h1>
+
+@if (model != null)
+{
+    <p><strong>Username:</strong> @model.UserName</p>
+    <p><strong>First Name:</strong> @model.firstName</p>
+    <p><strong>Last Name:</strong> @model.lastName</p>
+    <p><strong>Date of Birth:</strong> @model.dob.ToString("mm/dd/yyyy")</p>
+    <p><strong>County:</strong> @model.county</p>
+    <p><strong>Insurance Number:</strong> @model.insuranceNum</p>
+}
+else
+{
+    <p>No user information found.</p>
+}
+
+@code {
+    private ApplicationUser model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            model = await httpClient.GetFromJsonAsync<ApplicationUser>("Output/OnGet");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}
