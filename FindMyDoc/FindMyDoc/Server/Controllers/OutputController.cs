@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FindMyDoc.Server.Controllers
 {
@@ -22,10 +23,10 @@ namespace FindMyDoc.Server.Controllers
         public async Task<IActionResult> OnGet()
         {
             // Get the current user's ID
-            var userId = _signInManager.UserManager.GetUserId(User);
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(id);
 
             // Retrieve the user's email and phone number
-            var user = await _userManager.FindByIdAsync(userId);
             var username = user.UserName;
             var firstname = user.firstName;
             var lastname = user.lastName;
