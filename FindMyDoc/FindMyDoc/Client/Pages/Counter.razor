@@ -22,33 +22,45 @@ height: 3.5rem;
     <ValidationSummary />
 
     <div class="form-group">
-        <label for="insuranceNumber">Insurance Number:</label>
+        <label for="insuranceNumber">What is your Insurance Number:</label>
         <InputText id="insuranceNumber" class="form-control" @bind-Value="@input.InsuranceNumber" />
     </div>
 
     <div class="form-group">
-        <label for="availabilityDate">Availability Date:</label>
+        <label for="availabilityDate">What is your Availability Date:</label>
         <InputDate id="availabilityDate" class="form-control" @bind-Value="@input.AvailabilityDate" />
     </div>
 
     <div class="form-group">
-        <label for="primaryCareProvider">Primary Care Provider:</label>
-        <InputCheckbox id="primaryCareProvider" class="form-control" @bind-Value="@input.PrimaryCareProvider" />
+        <label for="primaryCareProvider">Do You Have a Primary Care Provider:</label>
+        <select @bind=@input.PrimaryCareProvider>
+<option value="true">Yes</option>
+<option value="false">No</option>
+</select>
     </div>
 
     <div class="form-group">
-        <label for="physician">Physician:</label>
-        <InputCheckbox id="physician" class="form-control" @bind-Value="@input.Physician" />
+        <label for="physician">Do you need a Physician:</label>
+        <select @bind=@input.Physician>
+<option value="true">Yes</option>
+<option value="false">No</option>
+</select>
     </div>
 
     <div class="form-group">
-        <label for="nurse">Nurse:</label>
-        <InputCheckbox id="nurse" class="form-control" @bind-Value="@input.Nurse" />
+        <label for="nurse">Do you need a Nurse:</label>
+        <select @bind=@input.Nurse>
+<option value="true">Yes</option>
+<option value="false">No</option>
+</select>
     </div>
 
     <div class="form-group">
-        <label for="physicianAssistant">Physician Assistant:</label>
-        <InputCheckbox id="physicianAssistant" class="form-control" @bind-Value="@input.PhysicianAssistant" />
+        <label for="physicianAssistant">Do you need a Physician Assistant:</label>
+        <select @bind=@input.PhysicianAssistant>
+<option value="true">Yes</option>
+<option value="false">No</option>
+</select>
     </div>
 
     <button onclick=@(() => num = s.GetProviderNum(p, input.PrimaryCareProvider, input.Physician, input.Nurse, input.PhysicianAssistant))>Generate</button>
@@ -122,6 +134,8 @@ height: 3.5rem;
         Console.WriteLine(num);
     }
 }
+
+
 
 
 
