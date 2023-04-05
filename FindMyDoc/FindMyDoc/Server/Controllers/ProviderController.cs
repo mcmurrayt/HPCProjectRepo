@@ -50,7 +50,7 @@ namespace FindMyDoc.Server.Controllers
 
         [HttpGet]
         [Route("api/create-provider")]
-        public async Task<ActionResult<bool>> GetProviderByFips()
+        public async Task<ActionResult<bool>> CreateProvider()
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(id);
