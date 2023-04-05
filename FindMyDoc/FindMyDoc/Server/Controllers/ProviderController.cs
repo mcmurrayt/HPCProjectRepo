@@ -36,7 +36,7 @@ namespace FindMyDoc.Server.Controllers
             {
                 try
                 {
-                    var p = _context.Providers.Where(x => x.fips == user.fips).FirstOrDefault();
+                    var p = _context.Providers.Where(x => x.fips != "" && Convert.ToInt32(x.fips) == Convert.ToInt32(user.fips)).FirstOrDefault();
                     return Ok(p);
                 }
                 catch (Exception ex)

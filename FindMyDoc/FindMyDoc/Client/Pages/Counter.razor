@@ -31,38 +31,6 @@ height: 3.5rem;
         <InputDate id="availabilityDate" class="form-control" @bind-Value="@input.AvailabilityDate" />
     </div>
 
-    <div class="form-group">
-        <label for="primaryCareProvider">Do You Have a Primary Care Provider:</label>
-        <select @bind=@input.PrimaryCareProvider>
-<option value="true">Yes</option>
-<option value="false">No</option>
-</select>
-    </div>
-
-    <div class="form-group">
-        <label for="physician">Do you need a Physician:</label>
-        <select @bind=@input.Physician>
-<option value="true">Yes</option>
-<option value="false">No</option>
-</select>
-    </div>
-
-    <div class="form-group">
-        <label for="nurse">Do you need a Nurse:</label>
-        <select @bind=@input.Nurse>
-<option value="true">Yes</option>
-<option value="false">No</option>
-</select>
-    </div>
-
-    <div class="form-group">
-        <label for="physicianAssistant">Do you need a Physician Assistant:</label>
-        <select @bind=@input.PhysicianAssistant>
-<option value="true">Yes</option>
-<option value="false">No</option>
-</select>
-    </div>
-
 <div class="form-check">
 <input class="form-check-input" type="checkbox" @bind-value="input.PrimaryCareProvider" id="flexCheckDefault">
 <label class="form-check-label" for"flexCheckDefault">
@@ -91,7 +59,7 @@ height: 3.5rem;
 	</label>
 </div>
 
-    <button onclick=@(() => num = s.GetProviderNum(p, input.PrimaryCareProvider, input.Physician, input.Nurse, input.PhysicianAssistant))>Generate</button>
+    <button onclick=@(() => GenerateProvider())>Generate</button>
     <button onclick=@(() => PrintNum(num))>Print Num</button>
     <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -108,14 +76,41 @@ height: 3.5rem;
         //Handle form submission here
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        // execute conditionally for loading data, otherwise this will load
-        // every time the page refreshes
-        if(firstRender)
+        p = await GetProvider();
+    }
+
+    private async Task GenerateProvider()
+    {
+        try
         {
-            p = GetProvider().Result;
+            num = s.GetProviderNum(p, input.PrimaryCareProvider, input.Physician, input.Nurse, input.PhysicianAssistant);
         }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+    private async Task<Provider> GetProvider()
+    {
+        try
+        {
+            Provider p = await Http.GetFromJsonAsync<Provider>("api/get-provider");
+            Console.WriteLine(p);
+            return p;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return new Provider();
+        }
+    }
+
+    private void PrintNum(int num)
+    {
+        Console.WriteLine(num);
     }
 
     private class inputData
@@ -139,30 +134,6 @@ height: 3.5rem;
         public bool PhysicianAssistant { get; set; } = false;
     }
 }
-
-@functions
-{
-    private async Task<Provider> GetProvider()
-    {
-        try
-        {
-            Provider p = await Http.GetFromJsonAsync<Provider>("api/get-provider");
-            Console.WriteLine(p);
-            return p;
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return new Provider();
-        }
-    }
-
-    private void PrintNum(int num)
-    {
-        Console.WriteLine(num);
-    }
-}
-
 
 
 

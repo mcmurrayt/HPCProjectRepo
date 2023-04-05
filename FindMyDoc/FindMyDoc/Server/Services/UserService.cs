@@ -18,35 +18,6 @@ namespace FindMyDoc.Server.Services
             //_userManager = userManager;
             _context = context;
         }
-        /*public async Task<bool> UpdateUserFips(ApplicationUser user)
-        {
-            try
-            {
-                string CountyNormalized = user.county.ToLower();
-
-                FipsCounty fipsC = (from c in _context.FipsCounties where c.CountyName == CountyNormalized select c).FirstOrDefault();
-
-                string fips = (from s in _context.FipsStates
-                               join c in _context.FipsCounties on s.Id equals c.FipsStateId
-                               where s.StateName == user.state
-                               where c.CountyName == fipsC.CountyName
-                               select c.CountyFIPSCode).FirstOrDefaultAsync().ToString();
-                if (String.IsNullOrEmpty(fips))
-                {
-                    string newFips = (from s in _context.FipsStates
-                                      join c in _context.FipsCounties on s.Id equals c.FipsStateId
-                                      where s.StateName == user.state
-                                      where c.CountyName == user.state
-                                      select c.CountyFIPSCode).FirstOrDefaultAsync().ToString();
-                }
-                return true;
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return false;
-        }*/
 
         public async Task<string> UpdateUserFips(string state, string county)
         {
