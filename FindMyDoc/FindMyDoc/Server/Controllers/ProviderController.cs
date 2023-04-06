@@ -30,8 +30,9 @@ namespace FindMyDoc.Server.Controllers
         [Route("api/get-provider")]
         public async Task<ActionResult<Provider>> GetProvider()
         {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.GetUserAsync(User);
+            //var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 try
@@ -52,8 +53,9 @@ namespace FindMyDoc.Server.Controllers
         [Route("api/create-provider")]
         public async Task<ActionResult<bool>> CreateProvider()
         {
-            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.GetUserAsync(User);
+            //var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 try
