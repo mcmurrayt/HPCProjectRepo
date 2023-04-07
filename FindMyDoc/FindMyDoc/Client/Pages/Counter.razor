@@ -15,8 +15,8 @@ background-color: #DCBCE2;
 border-bottom: 1px solid #DCBCE2;
 justify-content: flex-end;
 height: 3.5rem;
-#availabilityDate {
-    width: 150px;
+.my-form #availabilityDate {
+    width: 100px;
 }
 
 }
@@ -28,7 +28,7 @@ height: 3.5rem;
 
     <div class="form-group">
         <label for="availabilityDate">What is your Availability Date:</label>
-        <InputDate id="availabilityDate" class="form-control" @bind-Value="@input.AvailabilityDate" />
+        <InputDate id="availabilityDate" style="width: 150px;" @bind-Value="@input.AvailabilityDate" />
     </div>
 
 <div class="form-check">
