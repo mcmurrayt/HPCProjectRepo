@@ -8,7 +8,7 @@ a.navbar-brand {
 }
 
 a {
-    color: #0077cc;
+    color: #DCBCE2;
 }
 
 .form-control:focus {
@@ -16,15 +16,21 @@ a {
     box-shadow: 0 0 0 0.2rem #0077cc;
 }
 
+.login-page {
+    background-color: #DCBCE2; /* Change this to your desired color */
+    /* other styles... */
+}
+
+
 .btn-primary {
-    color: #fff;
-    background-color: mediumvioletred;
+    color: #DCBCE2;
+    background-color: #DCBCE2;
     border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #1b6ec2;
+    background-color: #DCBCE2;
     border-color: #1861ac;
 }
 
@@ -74,7 +80,12 @@ html {
 
 body {
     margin-bottom: 60px;
+    background-color: #DCBCE2 
+   
 }
+<body style="background-color: #DCBCE2;" >
+<!-- your code here -->
+</body >
 
 .footer {
     position: absolute;
