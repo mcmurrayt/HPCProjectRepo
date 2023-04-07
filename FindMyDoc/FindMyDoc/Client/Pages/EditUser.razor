@@ -1,0 +1,69 @@
+﻿@page "/EditUser/{userId}"
+@inject HttpClient Http
+@inject NavigationManager nav
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using FindMyDoc.Shared
+
+<h3>EditUser</h3>
+
+<EditForm Model ="@user">
+    <div class="form-group">
+        <label for="State">State</label>
+        <InputText class="form-control" id="State" @bind-Value="user.state"></InputText>
+    </div>
+    <div class="form-group">
+        <label for="County">County</label>
+        <InputText class="form-control" id="County" @bind-Value="user.county"></InputText>
+    </div>
+</EditForm>
+
+<button onclick=@(() => Update()) type="submit" class="btn btn-primary">Update</button>
+
+@code 
+{
+    [Parameter]
+    public string userId { get; set; }
+    public UserAuthDto user { get; set; } = new UserAuthDto();
+    private List<UserAuthDto> users = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            users = await Http.GetFromJsonAsync<List<UserAuthDto>>("api/admin-get/");
+            user = users.Where(x => x.Id == userId).FirstOrDefault();
+            // user = await Http.GetFromJsonAsync<UserAuthDto>($"api/get-user-by-id/{userId}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+    public async Task Update()
+    {
+        try
+        {
+            await UpdateUser(user);
+            nav.NavigateTo("/users");
+            //put toast
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+    private async Task UpdateUser(UserAuthDto user)
+    {
+        try
+        {
+            await Http.PutAsJsonAsync<UserAuthDto>("api/update-user", user);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

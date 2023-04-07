@@ -2,19 +2,9 @@
 
 <h1>Users</h1>
 
-<p>
-    <NavLink class="btn btn-primary" href="create-user">
-        Add User
-    </NavLink>
-    <NavLink class="btn btn-primary" href="create-role">
-        Add Role
-    </NavLink>
-    <NavLink class="btn btn-primary" href="manage-role">
-        Manage Roles
-    </NavLink>
-</p>
-
-<table class="table">
+@if(users?.Any() ?? false)
+{
+    <table class="table">
     <thead>
         <tr>
             <th>Email/Username</th>
@@ -26,7 +16,7 @@
         @foreach (var user in users)
         {
             <tr>
-                <td>@user.firstName @user.lastName</td>
+                <td>@user.userName @user.state @user.county</td>
                 <td>
                     @foreach (var role in user.Roles)
                     {
@@ -34,10 +24,15 @@
                     }
                 </td>
                 <td>
-                    <NavLink class="btn btn-primary" href="@($"edit-user/{user.Id}")">Edit</NavLink>
-                    <NavLink class="btn btn-danger" href="@($"delete-user/{user.Id}")">Delete</NavLink>
+                    <button onclick=@(() => UpdateUser(user.Id)) class="btn btn-primary">Update</button>
+                    <button onclick=@(() => DeleteUser(user.Id)) class="btn btn-danger">Delete</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+}
+else
+{
+        <h1>No Users</h1>
+}

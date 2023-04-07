@@ -67,7 +67,7 @@ app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");

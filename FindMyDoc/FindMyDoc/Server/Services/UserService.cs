@@ -46,7 +46,7 @@ namespace FindMyDoc.Server.Services
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return "error";
+                return null;
             }
         }
     }
