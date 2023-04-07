@@ -1,19 +1,23 @@
 ﻿@page "/counter"
 @inject HttpClient Http
+@inject ToastService toastService
 @using FindMyDoc.Shared;
 @using System.Net.Http.Json;
 @using System.ComponentModel.DataAnnotations;
 @using FindMyDoc.Client.Services;
 @using FindMyDoc.Server.Models;
 
+
 <h1>Find Your Doc Here:</h1>
 <style>
 body {
-background-color: lightgray;
+background-color: #DCBCE2;
 border-bottom: 1px solid #DCBCE2;
 justify-content: flex-end;
 height: 3.5rem;
-
+.my-form #availabilityDate {
+    width: 100px;
+}
 
 }
 </style>
@@ -24,7 +28,7 @@ height: 3.5rem;
 
     <div class="form-group">
         <label for="availabilityDate">What is your Availability Date:</label>
-        <InputDate id="availabilityDate" class="form-control" @bind-Value="@input.AvailabilityDate" />
+        <InputDate id="availabilityDate" style="width: 150px;" @bind-Value="@input.AvailabilityDate" />
     </div>
 
 <div class="form-check">
@@ -88,6 +92,8 @@ height: 3.5rem;
     </EditForm>
 
 @code {
+
+
     private UserInputService s = new UserInputService();
     private inputData input = new inputData();
     private Provider p = new Provider();
@@ -106,6 +112,7 @@ height: 3.5rem;
     private void HandleValidSubmit()
     {
         //Handle form submission here
+
     }
 
     private async Task GenerateProvider()
@@ -113,6 +120,7 @@ height: 3.5rem;
         try
         {
             num = s.GetProviderNum(p, input.PrimaryCareProvider, input.Physician, input.Nurse, input.PhysicianAssistant);
+            toastService.ShowToast("Report Generated Succesfully", ToastLevel.Success, 5000);
         }
         catch(Exception ex)
         {

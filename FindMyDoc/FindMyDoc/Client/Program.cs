@@ -1,4 +1,5 @@
 using FindMyDoc.Client;
+using FindMyDoc.Client.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -12,7 +13,7 @@ builder.Services.AddHttpClient("FindMyDoc.ServerAPI", client => client.BaseAddre
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("FindMyDoc.ServerAPI"));
-
+builder.Services.AddScoped<ToastService>();
 builder.Services.AddApiAuthorization();
 
 await builder.Build().RunAsync();

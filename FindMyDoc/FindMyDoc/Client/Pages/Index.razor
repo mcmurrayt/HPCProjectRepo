@@ -3,10 +3,23 @@
 @using System.ComponentModel.DataAnnotations
 @using FindMyDoc.Shared;
 @using System.Net.Http.Json;
+@inject ToastService toastService
+@using FindMyDoc.Client.Services;
+
+
+
+<AuthorizeView>
+    <Authorized>
+        <p>Hello, @context.User.Identity.Name</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>You haven't logged in, so you cannot access the form</p>
+    </NotAuthorized>
+</AuthorizeView>
 
 <style>
 body {
-background-color: lightgray;
+background-color: #DCBCE2;
 border-bottom: 1px solid #DCBCE2;
 justify-content: center;
 height: 3.5rem;
